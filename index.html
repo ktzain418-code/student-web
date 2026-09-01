@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Web App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">StudentWeb</div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#courses" class="nav-link">Courses</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Welcome to Student Web</h1>
+                    <p>Your platform for learning and growth</p>
+                    <button class="btn btn-primary">Get Started</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about">
+            <div class="container">
+                <h2>About Us</h2>
+                <p>We provide a comprehensive platform for students to learn, collaborate, and grow their skills.</p>
+                <div class="features">
+                    <div class="feature-card">
+                        <h3>📚 Learn</h3>
+                        <p>Access quality educational content</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🤝 Collaborate</h3>
+                        <p>Work together with peers</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🎯 Grow</h3>
+                        <p>Achieve your academic goals</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="courses" class="courses">
+            <div class="container">
+                <h2>Featured Courses</h2>
+                <div class="course-grid">
+                    <div class="course-card">
+                        <h3>Web Development</h3>
+                        <p>Learn HTML, CSS, and JavaScript</p>
+                        <span class="badge">Beginner</span>
+                    </div>
+                    <div class="course-card">
+                        <h3>Data Science</h3>
+                        <p>Master Python and Data Analysis</p>
+                        <span class="badge">Intermediate</span>
+                    </div>
+                    <div class="course-card">
+                        <h3>Mobile Apps</h3>
+                        <p>Build apps for iOS and Android</p>
+                        <span class="badge">Advanced</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2>Get In Touch</h2>
+                <form class="contact-form" id="contactForm">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" rows="5" required></textarea>
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Student Web. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
