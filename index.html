@@ -1,104 +1,472 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Web App</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <header>
-        <nav class="navbar">
-            <div class="container">
-                <div class="logo">StudentWeb</div>
-                <ul class="nav-menu">
-                    <li><a href="#home" class="nav-link">Home</a></li>
-                    <li><a href="#about" class="nav-link">About</a></li>
-                    <li><a href="#courses" class="nav-link">Courses</a></li>
-                    <li><a href="#contact" class="nav-link">Contact</a></li>
-                </ul>
-            </div>
-        </nav>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="NearHelp helps people discover trusted local service providers for home, repair, cleaning, education, and more.
+"
+    />
+    <meta name="theme-color" content="#1d4ed8" />
+    <title>NearHelp | Trusted Local Services Near You</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="navbar container" aria-label="Main navigation">
+        <a href="#home" class="brand" aria-label="NearHelp home">
+          <span class="brand-mark">N</span>
+          <span>NearHelp</span>
+        </a>
+
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-label="Toggle navigation menu"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        <div class="nav-menu" id="navMenu">
+          <a href="#home">Home</a>
+          <a href="#services">Services</a>
+          <a href="#providers">Providers</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+          <a href="#provider-registration" class="btn btn-primary nav-cta">Join as a Provider</a>
+        </div>
+      </nav>
     </header>
 
-    <main>
-        <!-- Hero Section -->
-        <section id="home" class="hero">
-            <div class="container">
-                <div class="hero-content">
-                    <h1>Welcome to Student Web</h1>
-                    <p>Your platform for learning and growth</p>
-                    <button class="btn btn-primary">Get Started</button>
-                </div>
-            </div>
-        </section>
+    <main id="home">
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">Trusted local professionals</p>
+            <h1>Find Trusted Local Services Near You</h1>
+            <p class="hero-subheading">
+              Discover reliable electricians, plumbers, tutors, repair technicians and
+              other local services in one place.
+            </p>
 
-        <!-- About Section -->
-        <section id="about" class="about">
-            <div class="container">
-                <h2>About Us</h2>
-                <p>We provide a comprehensive platform for students to learn, collaborate, and grow their skills.</p>
-                <div class="features">
-                    <div class="feature-card">
-                        <h3>📚 Learn</h3>
-                        <p>Access quality educational content</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>🤝 Collaborate</h3>
-                        <p>Work together with peers</p>
-                    </div>
-                    <div class="feature-card">
-                        <h3>🎯 Grow</h3>
-                        <p>Achieve your academic goals</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+            <form class="search-bar" id="searchForm" aria-label="Service search form">
+              <label class="input-field" aria-label="Service search input">
+                <span class="input-icon">🔎</span>
+                <input
+                  id="serviceSearch"
+                  type="text"
+                  name="service"
+                  placeholder="What service do you need?"
+                />
+              </label>
 
-        <!-- Courses Section -->
-        <section id="courses" class="courses">
-            <div class="container">
-                <h2>Featured Courses</h2>
-                <div class="course-grid">
-                    <div class="course-card">
-                        <h3>Web Development</h3>
-                        <p>Learn HTML, CSS, and JavaScript</p>
-                        <span class="badge">Beginner</span>
-                    </div>
-                    <div class="course-card">
-                        <h3>Data Science</h3>
-                        <p>Master Python and Data Analysis</p>
-                        <span class="badge">Intermediate</span>
-                    </div>
-                    <div class="course-card">
-                        <h3>Mobile Apps</h3>
-                        <p>Build apps for iOS and Android</p>
-                        <span class="badge">Advanced</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+              <label class="input-field" aria-label="Location search input">
+                <span class="input-icon">📍</span>
+                <input
+                  id="locationSearch"
+                  type="text"
+                  name="location"
+                  placeholder="Your location"
+                />
+              </label>
 
-        <!-- Contact Section -->
-        <section id="contact" class="contact">
-            <div class="container">
-                <h2>Get In Touch</h2>
-                <form class="contact-form" id="contactForm">
-                    <input type="text" placeholder="Your Name" required>
-                    <input type="email" placeholder="Your Email" required>
-                    <textarea placeholder="Your Message" rows="5" required></textarea>
-                    <button type="submit" class="btn btn-primary">Send Message</button>
-                </form>
+              <button type="submit" class="btn btn-primary search-btn">Search</button>
+            </form>
+
+            <div class="hero-metrics" aria-label="Marketplace stats">
+              <div>
+                <strong>3200+</strong>
+                <span>Trusted providers</span>
+              </div>
+              <div>
+                <strong>18k+</strong>
+                <span>Service requests</span>
+              </div>
+              <div>
+                <strong>4.9/5</strong>
+                <span>Average rating</span>
+              </div>
             </div>
-        </section>
+          </div>
+
+          <div class="hero-panel" aria-label="Popular service summary cards">
+            <div class="panel-card featured">
+              <span class="badge">Popular today</span>
+              <h3>Need an electrician now?</h3>
+              <p>Available professionals in your area within 30 minutes.</p>
+              <button type="button" class="btn btn-light" data-service="Electrician">
+                Book an Electrician
+              </button>
+            </div>
+
+            <div class="mini-grid">
+              <div class="mini-card">
+                <span>⚡</span>
+                <p>Electrician</p>
+              </div>
+              <div class="mini-card">
+                <span>🔧</span>
+                <p>Plumber</p>
+              </div>
+              <div class="mini-card">
+                <span>📚</span>
+                <p>Tutor</p>
+              </div>
+              <div class="mini-card">
+                <span>🧼</span>
+                <p>Cleaning</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="categories" id="services">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow eyebrow-blue">Service categories</p>
+            <h2>Explore Local Services</h2>
+          </div>
+
+          <div class="category-grid" id="categoryGrid" aria-label="Service categories">
+            <button class="category-card active" type="button" data-category="All">
+              <span>✨</span>
+              <strong>All</strong>
+            </button>
+            <button class="category-card" type="button" data-category="Electrician">
+              <span>⚡</span>
+              <strong>Electrician</strong>
+            </button>
+            <button class="category-card" type="button" data-category="Plumber">
+              <span>🚿</span>
+              <strong>Plumber</strong>
+            </button>
+            <button class="category-card" type="button" data-category="Tutor">
+              <span>📚</span>
+              <strong>Tutor</strong>
+            </button>
+            <button class="category-card" type="button" data-category="Mobile Repair">
+              <span>📱</span>
+              <strong>Mobile Repair</strong>
+            </button>
+            <button class="category-card" type="button" data-category="Computer Repair">
+              <span>💻</span>
+              <strong>Computer Repair</strong>
+            </button>
+            <button class="category-card" type="button" data-category="AC Repair">
+              <span>❄️</span>
+              <strong>AC Repair</strong>
+            </button>
+            <button class="category-card" type="button" data-category="Carpenter">
+              <span>🪚</span>
+              <strong>Carpenter</strong>
+            </button>
+            <button class="category-card" type="button" data-category="Painter">
+              <span>🎨</span>
+              <strong>Painter</strong>
+            </button>
+            <button class="category-card" type="button" data-category="Cleaning">
+              <span>🧼</span>
+              <strong>Cleaning</strong>
+            </button>
+            <button class="category-card" type="button" data-category="Photographer">
+              <span>📷</span>
+              <strong>Photographer</strong>
+            </button>
+            <button class="category-card" type="button" data-category="Mechanic">
+              <span>🛠️</span>
+              <strong>Mechanic</strong>
+            </button>
+            <button class="category-card" type="button" data-category="Home Services">
+              <span>🏠</span>
+              <strong>Home Services</strong>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="providers" id="providers">
+        <div class="container">
+          <div class="section-heading provider-header">
+            <div>
+              <p class="eyebrow eyebrow-blue">Top providers</p>
+              <h2>Trusted professionals in your area</h2>
+            </div>
+            <a href="#provider-registration" class="btn btn-outline">Become a provider</a>
+          </div>
+
+          <div class="filter-panel" aria-label="Search and filter providers">
+            <label>
+              <span>Category</span>
+              <select id="categoryFilter">
+                <option value="All">All categories</option>
+                <option value="Electrician">Electrician</option>
+                <option value="Plumber">Plumber</option>
+                <option value="Tutor">Tutor</option>
+                <option value="Mobile Repair">Mobile Repair</option>
+                <option value="Computer Repair">Computer Repair</option>
+                <option value="AC Repair">AC Repair</option>
+                <option value="Carpenter">Carpenter</option>
+                <option value="Painter">Painter</option>
+                <option value="Cleaning">Cleaning</option>
+                <option value="Photographer">Photographer</option>
+                <option value="Mechanic">Mechanic</option>
+                <option value="Home Services">Home Services</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Rating</span>
+              <select id="ratingFilter">
+                <option value="Any">Any rating</option>
+                <option value="4.5">4.5+</option>
+                <option value="4.8">4.8+</option>
+                <option value="5">5.0</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Availability</span>
+              <select id="availabilityFilter">
+                <option value="Any">Any availability</option>
+                <option value="Available Today">Available Today</option>
+                <option value="Available Tomorrow">Available Tomorrow</option>
+                <option value="Busy Today">Busy Today</option>
+              </select>
+            </label>
+
+            <label>
+              <span>Location</span>
+              <input id="providerLocationFilter" type="text" placeholder="Filter by area" />
+            </label>
+          </div>
+
+          <div id="noResults" class="empty-state hidden" aria-live="polite">
+            No service providers found
+          </div>
+
+          <div id="providerList" class="provider-grid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section class="registration" id="provider-registration">
+        <div class="container registration-grid">
+          <div class="registration-copy">
+            <p class="eyebrow eyebrow-blue">Join the network</p>
+            <h2>Grow your local business with NearHelp</h2>
+            <p>
+              Connect with homeowners and customers looking for trusted professionals in
+              their nearby area. Build your reputation and get more local leads.
+            </p>
+            <ul class="benefit-list">
+              <li>Reach nearby customers quickly</li>
+              <li>Showcase your experience and reviews</li>
+              <li>Manage availability and direct contact requests</li>
+            </ul>
+          </div>
+
+          <form id="providerForm" class="provider-form" novalidate>
+            <div class="form-row two-up">
+              <label>
+                <span>Full Name</span>
+                <input type="text" name="fullName" placeholder="Your full name" required />
+              </label>
+              <label>
+                <span>Business Name</span>
+                <input type="text" name="businessName" placeholder="Business name" required />
+              </label>
+            </div>
+
+            <div class="form-row two-up">
+              <label>
+                <span>Phone Number</span>
+                <input type="tel" name="phone" placeholder="+91 98765 43210" required />
+              </label>
+              <label>
+                <span>WhatsApp Number</span>
+                <input type="tel" name="whatsapp" placeholder="+91 98765 43210" required />
+              </label>
+            </div>
+
+            <div class="form-row two-up">
+              <label>
+                <span>Service Category</span>
+                <select name="serviceCategory" required>
+                  <option value="">Select service</option>
+                  <option value="Electrician">Electrician</option>
+                  <option value="Plumber">Plumber</option>
+                  <option value="Tutor">Tutor</option>
+                  <option value="Mobile Repair">Mobile Repair</option>
+                  <option value="Computer Repair">Computer Repair</option>
+                  <option value="AC Repair">AC Repair</option>
+                  <option value="Carpenter">Carpenter</option>
+                  <option value="Painter">Painter</option>
+                  <option value="Cleaning">Cleaning</option>
+                  <option value="Photographer">Photographer</option>
+                  <option value="Mechanic">Mechanic</option>
+                  <option value="Home Services">Home Services</option>
+                </select>
+              </label>
+              <label>
+                <span>Location</span>
+                <input type="text" name="location" placeholder="City or area" required />
+              </label>
+            </div>
+
+            <div class="form-row two-up">
+              <label>
+                <span>Experience</span>
+                <input type="text" name="experience" placeholder="Example: 5 years" required />
+              </label>
+              <label>
+                <span>Availability</span>
+                <select name="availability" required>
+                  <option value="">Select availability</option>
+                  <option value="Available Today">Available Today</option>
+                  <option value="Available Tomorrow">Available Tomorrow</option>
+                  <option value="Busy Today">Busy Today</option>
+                </select>
+              </label>
+            </div>
+
+            <label>
+              <span>Description</span>
+              <textarea name="description" rows="4" placeholder="Tell people about your service" required></textarea>
+            </label>
+
+            <label>
+              <span>Profile Photo</span>
+              <input type="url" name="profilePhoto" placeholder="Paste image URL" />
+            </label>
+
+            <button type="submit" class="btn btn-primary register-btn">Register Now</button>
+            <p id="formStatus" class="form-status" aria-live="polite"></p>
+          </form>
+        </div>
+      </section>
+
+      <section class="about" id="about">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow eyebrow-blue">Why NearHelp?</p>
+            <h2>Helping people discover trusted local services</h2>
+          </div>
+
+          <div class="feature-grid">
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">✅</div>
+              <h3>Trusted Providers</h3>
+              <p>Find reliable local professionals with verified experience and positive reviews.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">📞</div>
+              <h3>Easy Contact</h3>
+              <p>Call or WhatsApp providers directly with a single tap for fast communication.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="feature-icon" aria-hidden="true">📍</div>
+              <h3>Local Services</h3>
+              <p>Discover useful services near your location without searching multiple websites.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="reviews" id="reviews">
+        <div class="container">
+          <div class="section-heading">
+            <p class="eyebrow eyebrow-blue">Customer feedback</p>
+            <h2>What people say about NearHelp</h2>
+          </div>
+
+          <div class="review-grid">
+            <article class="review-card">
+              <div class="review-header">
+                <strong>Ayesha K.</strong>
+                <span>★★★★★</span>
+              </div>
+              <p>
+                “I found a very reliable electrician in my area within minutes. The process was super easy.”
+              </p>
+              <small>12 May 2026</small>
+            </article>
+
+            <article class="review-card">
+              <div class="review-header">
+                <strong>Rafiq M.</strong>
+                <span>★★★★★</span>
+              </div>
+              <p>
+                “The plumber I booked was punctual and professional. Highly recommend using NearHelp.”
+              </p>
+              <small>08 May 2026</small>
+            </article>
+
+            <article class="review-card">
+              <div class="review-header">
+                <strong>Sneha P.</strong>
+                <span>★★★★★</span>
+              </div>
+              <p>
+                “It helped me find a tutor for my son very quickly. The provider profile details were very clear.”
+              </p>
+              <small>03 May 2026</small>
+            </article>
+          </div>
+        </div>
+      </section>
     </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2026 Student Web. All rights reserved.</p>
+    <footer class="site-footer" id="contact">
+      <div class="container footer-grid">
+        <div>
+          <a href="#home" class="brand footer-brand">
+            <span class="brand-mark">N</span>
+            <span>NearHelp</span>
+          </a>
+          <p>Connecting people with trusted local services.</p>
         </div>
+
+        <div>
+          <h3>Quick links</h3>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="container">
+          <p>© 2026 NearHelp. All rights reserved.</p>
+        </div>
+      </div>
     </footer>
 
+    <div class="profile-modal hidden" id="profileModal" aria-hidden="true">
+      <div class="modal-backdrop" data-close="true"></div>
+      <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="profileTitle">
+        <button class="modal-close" type="button" aria-label="Close modal">×</button>
+        <div id="profileContent"></div>
+      </div>
+    </div>
+
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
