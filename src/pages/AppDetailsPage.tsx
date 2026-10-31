@@ -6,9 +6,10 @@ import { PageHeader } from "../components/PageHeader";
 import { AppIcon } from "../components/AppIcon";
 import { StatusBadge } from "../components/StatusBadge";
 import { ReinstallButton } from "../components/ReinstallButton";
+import { OpenAppButton } from "../components/OpenAppButton";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import { EmptyState } from "../components/EmptyState";
-import { formatDateTime, formatTime, formatLongDate } from "../lib/format";
+import { formatDateTime, formatDate, formatTime, formatLongDate } from "../lib/format";
 import type { HistoryEventType } from "../types";
 
 const EVENT_LABELS: Record<HistoryEventType, string> = {
@@ -30,6 +31,18 @@ export default function AppDetailsPage() {
     () => events.filter((event) => event.appId === id || (app && event.packageName === app.packageName)),
     [events, id, app],
   );
+
+  /**
+   * Dates come from the timeline so they survive a reinstall: the app row keeps
+   * the latest uninstall date, and history keeps every earlier one.
+   */
+  const lastEventAt = (type: HistoryEventType): string | null => {
+    const matches = appEvents.filter((event) => event.type === type);
+    if (matches.length === 0) return null;
+    return matches.reduce((latest, event) => (Date.parse(event.at) > Date.parse(latest) ? event.at : latest), matches[0].at);
+  };
+  const uninstalledAt = lastEventAt("UNINSTALLED") ?? app?.uninstallDetectedAt ?? null;
+  const reinstalledAt = lastEventAt("REINSTALLED");
 
   if (!app) {
     return (
@@ -63,6 +76,7 @@ export default function AppDetailsPage() {
     }
   }
 
+  const installed = app.status === "INSTALLED";
   const limited = app.uninstallConfidence === "limited-visibility";
 
   return (
@@ -77,6 +91,26 @@ export default function AppDetailsPage() {
           <StatusBadge status={app.status} />
         </section>
 
+        <section
+          className={`detail-status ${installed ? "detail-status--installed" : "detail-status--uninstalled"}`}
+          aria-label="Current status"
+        >
+          <div className="detail-status-head">
+            <span className="detail-status-label">App status</span>
+            <span className="detail-status-value">{installed ? "Installed" : "App uninstalled"}</span>
+          </div>
+          <p className="detail-status-note">
+            {installed
+              ? "Detected in the last scan. Open app launches it on this phone."
+              : `Not found in the scan on ${formatDate(app.uninstallDetectedAt)}. Reinstall app opens the official Play Store listing for this package — App History never installs anything itself.`}
+          </p>
+          {installed ? (
+            <OpenAppButton app={app} block label="Open app" />
+          ) : (
+            <ReinstallButton packageName={app.packageName} block label="Reinstall app" />
+          )}
+        </section>
+
         <section className="card">
           <dl className="meta-list">
             <div className="meta-row">
@@ -85,20 +119,26 @@ export default function AppDetailsPage() {
             </div>
             <div className="meta-row">
               <dt>Status</dt>
-              <dd>{app.status === "INSTALLED" ? "Installed" : "Uninstalled"}</dd>
+              <dd>{installed ? "Installed" : "Uninstalled"}</dd>
             </div>
             <div className="meta-row">
-              <dt>First seen</dt>
+              <dt>First detected</dt>
               <dd>{formatDateTime(app.firstSeen)}</dd>
             </div>
             <div className="meta-row">
-              <dt>Last seen</dt>
+              <dt>Last detected</dt>
               <dd>{formatDateTime(app.lastSeen)}</dd>
             </div>
-            {app.status === "UNINSTALLED" ? (
+            {uninstalledAt ? (
               <div className="meta-row">
-                <dt>Uninstalled detected</dt>
-                <dd>{formatDateTime(app.uninstallDetectedAt)}</dd>
+                <dt>Uninstalled</dt>
+                <dd>{formatDateTime(uninstalledAt)}</dd>
+              </div>
+            ) : null}
+            {reinstalledAt ? (
+              <div className="meta-row">
+                <dt>Reinstalled</dt>
+                <dd>{formatDateTime(reinstalledAt)}</dd>
               </div>
             ) : null}
             <div className="meta-row">
@@ -113,16 +153,6 @@ export default function AppDetailsPage() {
             </p>
           ) : null}
         </section>
-
-        {app.status === "UNINSTALLED" ? (
-          <section className="card detail-reinstall">
-            <h3 className="card-title">Reinstall</h3>
-            <p className="card-body-text">
-              Opens the Play Store listing for this package. App History cannot install or restore an app itself.
-            </p>
-            <ReinstallButton packageName={app.packageName} block label="Open Play Store" />
-          </section>
-        ) : null}
 
         <section className="section">
           <div className="section-head">
@@ -162,8 +192,8 @@ export default function AppDetailsPage() {
         </section>
 
         <p className="footnote">
-          App History remembers apps this app previously detected. It cannot recover a deleted app — the record
-          above is simply what was on this device when it was last scanned.
+          Status changes only when a scan runs — App History is not notified the instant an app is removed. A
+          reinstall is done in the Play Store, and the next scan marks the app installed again.
         </p>
       </div>
 

@@ -26,8 +26,12 @@ import {
 const SETTINGS_KEY = "apphistory.settings.v1";
 const PRIVACY_KEY = "apphistory.privacy.v1";
 
-/** Automatic startup check only runs if the last scan is older than this. */
-const AUTO_SCAN_INTERVAL_MS = 6 * 60 * 60 * 1000;
+/**
+ * The automatic check runs when App History is opened and whenever it returns
+ * to the foreground (for example after installing an app in the Play Store).
+ * Scans closer together than this are skipped so switching apps cannot loop.
+ */
+const AUTO_SCAN_MIN_GAP_MS = 20_000;
 
 interface AppStoreValue {
   ready: boolean;
@@ -101,7 +105,6 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
   const [notice, setNotice] = useState<string | null>(null);
 
   const scanningRef = useRef(false);
-  const autoScanAttempted = useRef(false);
   const noticeTimer = useRef<number | null>(null);
 
   const provider = useMemo(() => getProvider(settings.demoMode), [settings.demoMode]);
@@ -225,17 +228,30 @@ export function AppStoreProvider({ children }: { children: ReactNode }) {
     [notify, provider, refresh, repo],
   );
 
-  // Lightweight startup check: only when enabled, never in demo mode, and at
-  // most once per 6 hours so the app does not scan needlessly.
+  // Check on open and on every return to the foreground. This is what moves a
+  // deleted app to Uninstalled (and a reinstalled one back to Installed);
+  // there is no PACKAGE_REMOVED receiver, so no copy may claim instant detection.
   useEffect(() => {
-    if (!ready || autoScanAttempted.current) return;
-    if (!settings.autoScan || settings.demoMode) return;
-    if (!nativeAvailable) return;
-    autoScanAttempted.current = true;
-    const last = lastScan ? Date.parse(lastScan.at) : 0;
-    if (!last || Date.now() - last > AUTO_SCAN_INTERVAL_MS) {
+    if (!ready || !settings.autoScan || settings.demoMode || !nativeAvailable) return;
+
+    const maybeScan = () => {
+      if (document.visibilityState === "hidden") return;
+      if (scanningRef.current) return;
+      const last = lastScan ? Date.parse(lastScan.at) : 0;
+      if (last && Date.now() - last < AUTO_SCAN_MIN_GAP_MS) return;
       void scanNow("auto");
-    }
+    };
+
+    maybeScan();
+    const onForeground = () => {
+      if (document.visibilityState === "visible") maybeScan();
+    };
+    document.addEventListener("visibilitychange", onForeground);
+    window.addEventListener("focus", onForeground);
+    return () => {
+      document.removeEventListener("visibilitychange", onForeground);
+      window.removeEventListener("focus", onForeground);
+    };
   }, [ready, settings.autoScan, settings.demoMode, nativeAvailable, lastScan, scanNow]);
 
   const updateSettings = useCallback((patch: Partial<Settings>) => {

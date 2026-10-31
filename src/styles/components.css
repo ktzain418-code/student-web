@@ -408,6 +408,11 @@ a.app-card:active,
   font-weight: 650;
 }
 
+/* Three dates read better as two columns with the uninstall date full width. */
+.app-date-grid--triple > div:last-child {
+  grid-column: 1 / -1;
+}
+
 .app-card-actions {
   display: flex;
   align-items: center;
@@ -753,8 +758,61 @@ a.app-card:active,
   margin-bottom: 4px;
 }
 
-.detail-reinstall .card-title {
-  font-size: 13.5px;
+/* Status panel: the app's current state and its one primary action. */
+.detail-status {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--muted);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.detail-status--installed {
+  border-left-color: var(--success);
+}
+
+.detail-status--uninstalled {
+  border-left-color: var(--warn);
+}
+
+.detail-status-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.detail-status-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.detail-status-value {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.detail-status--installed .detail-status-value {
+  color: var(--success);
+}
+
+.detail-status--uninstalled .detail-status-value {
+  color: var(--warn);
+}
+
+.detail-status-note {
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--text-2);
 }
 
 .meta-list {

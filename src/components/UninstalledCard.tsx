@@ -22,9 +22,13 @@ export function UninstalledCard({ app }: { app: TrackedApp }) {
         <ChevronRight className="app-chevron" size={18} aria-hidden="true" />
       </Link>
 
-      <dl className="app-date-grid">
+      <dl className="app-date-grid app-date-grid--triple">
         <div>
-          <dt>Previously detected</dt>
+          <dt>First detected</dt>
+          <dd>{formatDate(app.firstSeen)}</dd>
+        </div>
+        <div>
+          <dt>Last detected</dt>
           <dd>{formatDate(app.lastSeen)}</dd>
         </div>
         <div>

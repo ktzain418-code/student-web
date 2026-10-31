@@ -21,6 +21,19 @@ For every app the device lets us see:
 
 …plus a `visibility` value (`full` / `limited`) and an explanatory `note`.
 
+## Bridge methods
+
+| JS call                                      | Kotlin                              | Behaviour                                                                                       |
+| -------------------------------------------- | ----------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `InstalledApps.scanInstalledApps()`          | `scanInstalledApps(call)`           | Returns every app PackageManager lets us see, with icons.                                       |
+| `InstalledApps.openApp({ packageName })`     | `openApp(call)`                     | `getLaunchIntentForPackage` + `startActivity`. Rejects with `NOT_INSTALLED` if there is nothing to launch. |
+
+`openApp` never installs anything, never touches APK files and never bypasses
+Android security. It is called only for apps whose last scan reported them as
+installed; if Android answers `NOT_INSTALLED` the UI rescans so the record moves
+to **Uninstalled Apps** with a **Reinstall app** button (Play Store listing)
+instead.
+
 It does **not** read contacts, files, messages, usage stats or any app content,
 and it uploads nothing. The web layer stores the result in IndexedDB on the
 device only.

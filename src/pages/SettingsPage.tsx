@@ -55,7 +55,7 @@ export default function SettingsPage() {
             checked={settings.autoScan}
             onChange={(checked) => updateSettings({ autoScan: checked })}
             label="Check automatically when the app opens"
-            description="At most once every 6 hours, so the battery is not drained."
+            description="Checks for newly installed and deleted apps whenever you open or return to App History."
           />
           <div className="meta-row meta-row--plain">
             <dt>Last scan</dt>
@@ -124,7 +124,8 @@ export default function SettingsPage() {
             </Notice>
           ) : null}
           <p className="footnote">
-            App History remembers apps this app previously detected. It cannot recover or restore a deleted app.
+            App History remembers apps this app previously detected. Reinstall app opens the Play Store listing;
+            App History never installs or restores an app itself.
           </p>
         </section>
       </div>

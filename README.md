@@ -7,9 +7,10 @@ applications it detects on your phone. Apps that are currently installed are
 listed as *Installed*; apps that were detected before but are no longer on the
 device move to **Uninstalled Apps** with the date they disappeared.
 
-> App History remembers apps that **this app previously detected**. It cannot
-> recover, restore or reinstall a deleted app. Where a Play Store listing
-> exists, it can open that listing for you.
+> App History remembers apps that **this app previously detected**. It never
+> installs, restores or downloads an app itself: **Reinstall app** opens the
+> official Google Play listing for the package, and **Open app** launches an app
+> that is currently installed.
 
 ## What it does
 
@@ -19,18 +20,24 @@ device move to **Uninstalled Apps** with the date they disappeared.
   them with the saved history. A previously detected package missing from a scan
   is marked *uninstalled* with a timestamp and a history event.
 - **Installed screen** — searchable, filterable (user/system) and sortable (A–Z,
-  Recent) list of currently detected apps.
+  Recent) list of currently detected apps, each with an **Open app** action that
+  launches it through `PackageManager.getLaunchIntentForPackage`.
 - **Uninstalled Apps screen** — every previously detected app that is no longer
-  present, with both dates and a **Reinstall** button that opens the Play Store
-  listing when one can be resolved, or says *"Play Store listing unavailable"*.
-- **App details** — icon, name, package, status, first seen, last seen,
-  uninstall date, per-app timeline, reinstall and delete-history actions.
+  present, with first detected, last detected and uninstall dates plus a
+  **Reinstall app** button that opens the Play Store listing when one can be
+  resolved, or says *"Play Store listing unavailable"*.
+- **App details** — icon, name, package, status, first detected, last detected,
+  uninstall and reinstall dates, per-app timeline, and one status action:
+  **Open app** while installed, **Reinstall app** once it is gone.
+- **Status changes on scan** — an uninstalled app returns to Installed (with a
+  *Reinstalled* entry in its history) as soon as a later scan sees it again.
 - **Global search** — by app name or package name, across installed and
   uninstalled apps.
 - **History** — chronological timeline ("App detected", "App marked as
   uninstalled", "App detected again") grouped by day.
-- **Settings** — light / dark / system theme, automatic startup check toggle,
-  Clear History, Delete All Data, privacy settings, developer demo mode.
+- **Settings** — light / dark / system theme, automatic check toggle (runs when
+  App History opens or returns to the foreground), Clear History, Delete All
+  Data, privacy settings, developer demo mode.
 
 ## Privacy
 
@@ -51,7 +58,8 @@ src/
   db/          IndexedDB storage (apps, history events, last scan)
   scan/        scan engine: comparison, safety guards, atomic commit
   native/      the ONLY place that touches installed-app data
-    deviceProvider.ts   Capacitor bridge to the Kotlin plugin
+    deviceProvider.ts   Capacitor bridge to the Kotlin scan
+    appLauncher.ts      Capacitor bridge to the Kotlin open-app call
     demoProvider.ts     clearly separated sample data for development
     playStore.ts        market:// + web Play Store hand-off
   state/       app store (React context): scan workflow, settings, theme
@@ -63,7 +71,8 @@ android-native/  Kotlin module that reads PackageManager — see its README
 **Native capability required.** Android does not let a web page enumerate
 installed apps, so that part is a real native module, not a web feature:
 `android-native/` contains `InstalledAppsReader` (PackageManager) and
-`InstalledAppsPlugin` (Capacitor bridge). When the web UI runs outside that
+`InstalledAppsPlugin` (Capacitor bridge for scanning and for opening an
+installed app). When the web UI runs outside that
 Android shell – including this sandbox preview – the scan reports *unavailable*
 and the interface explains why. **No device data is invented.**
 
@@ -112,4 +121,8 @@ android`, copy the Kotlin package, merge the manifest, `npx cap sync android`.
   when that applies.
 - Apps with no Play Store listing cannot be reopened from the Play Store.
 - Uninstalls are detected at scan time, not the moment they happen — there is no
-  background listener in this version.
+  background listener in this version. Scans run when App History is opened or
+  returns to the foreground, and when **Scan now** is pressed.
+- **Open app** only works inside the Android build, and only for a package the
+  last scan saw installed. Android rejects the launch (`NOT_INSTALLED`) if the
+  app has been removed since, and App History then rescans instead of pretending.

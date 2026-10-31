@@ -137,7 +137,8 @@ export default function DashboardPage() {
         </section>
 
         <p className="footnote">
-          App History remembers apps this app previously detected. It cannot recover or restore a deleted app.
+          Deleted apps appear here after the next scan. Reinstall opens the app's Play Store listing — App History
+          never installs or restores an app itself.
         </p>
       </div>
     </div>

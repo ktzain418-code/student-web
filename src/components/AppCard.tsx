@@ -4,20 +4,30 @@ import type { TrackedApp } from "../types";
 import { formatDate } from "../lib/format";
 import { AppIcon } from "./AppIcon";
 import { StatusBadge } from "./StatusBadge";
+import { OpenAppButton } from "./OpenAppButton";
 
 export function AppCard({ app }: { app: TrackedApp }) {
   return (
-    <Link to={`/app/${app.id}`} className="app-card">
-      <AppIcon appName={app.appName} packageName={app.packageName} icon={app.icon} />
-      <div className="app-card-body">
-        <div className="app-card-top">
-          <span className="app-name">{app.appName}</span>
-          <StatusBadge status={app.status} />
+    <article className="app-card app-card--stacked">
+      <Link to={`/app/${app.id}`} className="app-card-main">
+        <AppIcon appName={app.appName} packageName={app.packageName} icon={app.icon} />
+        <div className="app-card-body">
+          <div className="app-card-top">
+            <span className="app-name">{app.appName}</span>
+            <StatusBadge status={app.status} />
+          </div>
+          <span className="app-package">{app.packageName}</span>
+          <span className="app-meta">Last detected {formatDate(app.lastSeen)}</span>
         </div>
-        <span className="app-package">{app.packageName}</span>
-        <span className="app-meta">Last detected {formatDate(app.lastSeen)}</span>
+        <ChevronRight className="app-chevron" size={18} aria-hidden="true" />
+      </Link>
+
+      <div className="app-card-actions">
+        <OpenAppButton app={app} />
+        <Link to={`/app/${app.id}`} className="btn btn-ghost btn-sm">
+          Details
+        </Link>
       </div>
-      <ChevronRight className="app-chevron" size={18} aria-hidden="true" />
-    </Link>
+    </article>
   );
 }

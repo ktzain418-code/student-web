@@ -40,6 +40,13 @@ Dependencies are installed at container startup into the `node_modules` volume
   guards; they are the difference between honest and misleading history.
 - Uninstalls are detected by comparing scans. There is **no** `PACKAGE_REMOVED`
   receiver, so copy must never claim Android notified the app.
+- The automatic check runs on open **and** every return to the foreground
+  (`visibilitychange`/`focus`), debounced by `AUTO_SCAN_MIN_GAP_MS` (20 s). That
+  is what picks up a reinstall after the user comes back from the Play Store.
+- `Open app` goes through `src/native/appLauncher.ts` →
+  `InstalledApps.openApp`, which rejects with `NOT_INSTALLED` when the package
+  has no launch intent. `OpenAppButton` never renders for `UNINSTALLED` records
+  and triggers a scan on `NOT_INSTALLED`.
 - Theme is applied before first paint in `src/main.tsx` (reads the same
   localStorage key as the store) to avoid a light flash in dark mode.
 - `Reinstall` only opens the Play Store; it never installs. "Listing
@@ -50,4 +57,5 @@ Dependencies are installed at container startup into the `node_modules` volume
 `android-native/README.md` has the overlay steps (`npx cap add android`, copy the
 Kotlin package, merge the manifest `<queries>` block). The default build uses
 launcher-only visibility; `QUERY_ALL_PACKAGES` is commented out and needs Play
-Console approval.
+Console approval. The module exposes two bridge methods: `scanInstalledApps` and
+`openApp`.

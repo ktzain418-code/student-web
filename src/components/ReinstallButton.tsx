@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ExternalLink, Loader2 } from "lucide-react";
+import { Loader2, RotateCcw } from "lucide-react";
 import { openPlayStoreListing } from "../native/playStore";
 import { useAppStore } from "../state/AppStore";
 import { ConfirmDialog } from "./ConfirmDialog";
@@ -14,7 +14,7 @@ interface ReinstallButtonProps {
  * Opens the Play Store listing for a package. It never installs anything and
  * says so when no listing can be opened.
  */
-export function ReinstallButton({ packageName, block = false, label = "Reinstall" }: ReinstallButtonProps) {
+export function ReinstallButton({ packageName, block = false, label = "Reinstall app" }: ReinstallButtonProps) {
   const { notify } = useAppStore();
   const [busy, setBusy] = useState(false);
   const [unavailable, setUnavailable] = useState(false);
@@ -52,7 +52,7 @@ export function ReinstallButton({ packageName, block = false, label = "Reinstall
         }}
         aria-busy={busy}
       >
-        {busy ? <Loader2 className="spin" size={15} aria-hidden="true" /> : <ExternalLink size={15} aria-hidden="true" />}
+        {busy ? <Loader2 className="spin" size={15} aria-hidden="true" /> : <RotateCcw size={15} aria-hidden="true" />}
         {label}
       </button>
 
