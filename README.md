@@ -1,124 +1,94 @@
-# Student Web Application
+# App History
 
-A modern, responsive web application starter template designed for students and educational platforms.
+**Remember the apps you've used.**
 
-## Features
+App History tracks the apps installed on your Android device and keeps a local record
+of the ones that later disappear. It does not recover deleted apps and never claims
+to: it remembers apps that this app previously detected.
 
-- 🎨 **Responsive Design** - Works on all devices (desktop, tablet, mobile)
-- 📱 **Modern UI** - Clean and professional interface
-- 🚀 **Fast Loading** - Optimized for performance
-- 🎯 **Easy to Customize** - Simple HTML, CSS, and JavaScript
-- 💡 **Educational Content** - Perfect for learning web development
+## What it does
 
-## Project Structure
+- **Dashboard** — total apps tracked, currently installed, previously installed,
+  recently uninstalled, last scan time and a prominent **Scan Now** button.
+- **Currently Installed** — search by app name or package, sort A–Z or most recent,
+  filter by detection date, status badge and last-detected date.
+- **Uninstalled Apps** — apps previously detected that are no longer installed, with
+  their last-seen and uninstall-detected dates and a **Reinstall** button that opens
+  the Google Play Store listing (never a silent install).
+- **History** — chronological timeline of detections, uninstalls and reinstalls.
+- **App details** — package, status, first/last seen, uninstall date, reinstall and
+  delete-history actions.
+- **Settings** — light / dark / system theme, privacy details, clear history, delete
+  all data, Android integration status and a development-only demo mode.
 
-```
-student-web/
-├── index.html      # Main HTML file
-├── styles.css      # CSS styling
-├── script.js       # JavaScript functionality
-└── README.md       # This file
-```
+## Privacy
 
-## Sections
+> This app checks your device's accessible installed-app information to maintain your
+> personal app history. Your app history should remain on this device unless the user
+> explicitly enables cloud backup.
 
-1. **Navigation Bar** - Sticky header with smooth scrolling
-2. **Hero Section** - Eye-catching landing area
-3. **About Section** - Features and benefits
-4. **Courses Section** - Featured educational courses
-5. **Contact Section** - Contact form for inquiries
-6. **Footer** - Copyright information
+Only app name, package name, icon and detection dates are stored — locally
+(IndexedDB in the shared app layer, Room schema prepared for a fully native build).
+Nothing is uploaded; there is no account and no cloud backup.
 
-## Getting Started
+## Native Android module (required for real scans)
 
-### Option 1: Open Locally
-1. Clone this repository
-   ```bash
-   git clone https://github.com/ktzain418-code/student-web.git
-   cd student-web
-   ```
+A browser cannot enumerate installed Android packages. The native Kotlin module lives
+in [`android/`](android/README.md) and is the only component that reads device apps:
 
-2. Open `index.html` in your web browser
-   - Simply double-click the file, or
-   - Use a local server (recommended for development)
+- `PackageScanner.kt` — `PackageManager` scan, base64 icons, self package excluded
+- `AppHistoryPlugin.kt` — Capacitor plugin `AppHistory`: `scanInstalledApps`,
+  `openPlayStore`, `getCapabilities`
+- `AndroidManifest.xml` — `QUERY_ALL_PACKAGES` declaration plus `<queries>` for the
+  Play Store, with the Google Play restricted-permission note
+- `AppHistoryDatabase.kt` — Room reference schema for native storage
 
-### Option 2: Use a Local Server
+Without that module the UI shows **"Native module not connected"** and refuses to
+fabricate data. Inside the Android WebView it detects `Capacitor.Plugins.AppHistory`
+automatically.
 
-**Python 3:**
+### Package visibility limitations
+
+Android 11+ hides most installed packages unless the app declares visibility. Broad
+access needs `QUERY_ALL_PACKAGES`, which Google Play restricts and must be justified.
+The app therefore explains the limitation in Settings and never claims to see
+everything; a record is only marked uninstalled when a scan no longer detects it.
+
+## Demo mode
+
+Settings → **Demo mode** loads clearly labelled sample apps for development testing.
+It is off by default, and enabling or disabling it never mixes sample records with
+real ones.
+
+## Running the interface
+
+Static site, no build step:
+
 ```bash
-python -m http.server 8000
+docker compose -f docker-compose.base44.yml up -d   # Base44 sandbox, port 3000
+# or
+python3 -m http.server 8000
 ```
 
-**Python 2:**
-```bash
-python -m SimpleHTTPServer 8000
+## Project layout
+
+```
+index.html                 app shell (top bar, bottom navigation)
+css/app.css                Material-style light/dark design system
+js/main.js                 routing, actions, scan workflow
+js/db.js                   local database (IndexedDB)
+js/scan.js                 scan reconciliation (installed → uninstalled)
+js/native.js               native Android bridge + Play Store link handling
+js/state.js                shared state and settings
+js/demo.js                 development-only sample data
+js/ui.js                   formatting, icons, cards, sheets, toasts
+js/views/                  dashboard, installed, uninstalled, history, details, settings, privacy
+android/                   required native Android module (Kotlin, Capacitor)
 ```
 
-**Node.js (with http-server):**
-```bash
-npx http-server
-```
+## Limits
 
-Then visit `http://localhost:8000` in your browser.
-
-## Customization
-
-### Change Colors
-Edit the color values in `styles.css`:
-- Primary color: `#3498db` (Blue)
-- Dark color: `#2c3e50` (Dark Gray)
-- Accent gradient: Purple/Blue gradient
-
-### Update Content
-Edit `index.html` to:
-- Change section titles and descriptions
-- Add or remove courses
-- Update navigation links
-- Customize the hero section
-
-### Add Functionality
-Extend `script.js` to add:
-- Form validation
-- API integration
-- Interactive features
-- Animations
-
-## Technologies Used
-
-- **HTML5** - Semantic markup
-- **CSS3** - Modern styling with flexbox and grid
-- **Vanilla JavaScript** - No dependencies
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers
-
-## Next Steps
-
-1. Customize the content to match your needs
-2. Add your own images and branding
-3. Implement backend functionality
-4. Deploy to a hosting service
-
-## Deployment Options
-
-- **GitHub Pages** - Free hosting directly from your repository
-- **Netlify** - Simple deployment from Git
-- **Vercel** - Optimized for web applications
-- **Traditional Hosting** - Any web hosting service
-
-## License
-
-Free to use and modify for educational and commercial purposes.
-
-## Support
-
-For questions or suggestions, feel free to open an issue on GitHub.
-
----
-
-**Happy Coding! 🚀**
+- Cannot restore or reinstall an app automatically.
+- Cannot see apps Android hides from the package scanner.
+- Does not record installations that happened while the app was never opened and the
+  app was never scanned.
