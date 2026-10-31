@@ -1,0 +1,26 @@
+# Base44 development environment for this static site.
+# Serves the cloned source directly (no build step): edit index.html / styles.css /
+# script.js and the change is visible on the next page load.
+services:
+  web:
+    image: python:3.12-slim
+    labels:
+      base44.project: "NearHelp"
+      base44.kind: "web"
+      base44.port: "3000"
+    restart: on-failure
+    ports:
+      - "3000:80"
+    volumes:
+      - ./:/app:ro
+    environment:
+      - BASE44_PREVIEW_MODE
+    command: ["python", "/app/.base44/serve.py"]
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1/', timeout=3)"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s

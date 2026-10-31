@@ -208,7 +208,7 @@ function getFilteredProviders() {
   const searchTerm = (serviceSearchInput?.value || '').trim().toLowerCase();
   const locationTerm = (locationSearchInput?.value || '').trim().toLowerCase();
   const selectedCategory = categoryFilter?.value || 'All';
-  const minRating = Number(ratingFilter?.value || '0');
+  const minRating = Number(ratingFilter?.value) || 0;
   const selectedAvailability = availabilityFilter?.value || 'Any';
   const areaFilter = (providerLocationFilter?.value || '').trim().toLowerCase();
 
