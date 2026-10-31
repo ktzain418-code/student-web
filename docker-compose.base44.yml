@@ -1,0 +1,51 @@
+# Base44 development environment for App History.
+#
+# One service: the Vite dev server that serves the App History UI on host port
+# 3000 (what the Base44 preview shows). It runs FROM THE CLONED SOURCE with a
+# bind mount and live reload, so edits appear without a rebuild.
+#
+# The native Android module lives in ./android-native and is not runnable here —
+# see android-native/README.md.
+
+services:
+  web:
+    image: node:22-bookworm-slim
+    working_dir: /app
+    restart: on-failure
+    labels:
+      base44.project: "App History"
+      base44.kind: "web"
+      base44.port: "3000"
+    environment:
+      # Passed through from the sandbox; used only to allow the preview host in
+      # vite.config.ts while BASE44_PREVIEW_MODE === "1".
+      - BASE44_PREVIEW_MODE
+      - BASE44_SANDBOX_HOST_DOMAIN
+      - BASE44_PUBLIC_HOST_SUFFIX
+      - CI=true
+    command:
+      - sh
+      - -ec
+      - |
+        npm ci --no-audit --no-fund || npm install --no-audit --no-fund
+        exec npm run dev -- --host 0.0.0.0 --port 3000
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    ports:
+      - "3000:3000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 90s
+
+volumes:
+  node_modules:

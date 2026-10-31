@@ -1,0 +1,214 @@
+/* Design tokens, reset and base typography for App History. */
+
+:root {
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --page-bg: #E9EDF6;
+  --bg: #F6F7FB;
+  --surface: #ffffff;
+  --surface-2: #f1f4fa;
+  --surface-3: #e6ebf5;
+  --text: #101828;
+  --text-2: #3d4a5f;
+  --muted: #67748c;
+  --border: #e3e8f1;
+  --border-strong: #cfd8e7;
+
+  --primary: #4f46e5;
+  --primary-strong: #4338ca;
+  --primary-soft: #eef0ff;
+  --on-primary: #ffffff;
+
+  --success: #047857;
+  --success-soft: #e4f7ee;
+  --warn: #b54708;
+  --warn-soft: #fff2e2;
+  --danger: #b42318;
+  --danger-soft: #fdecea;
+
+  --shadow-card: 0 1px 2px rgba(16, 24, 40, 0.05), 0 8px 20px -16px rgba(16, 24, 40, 0.45);
+  --shadow-float: 0 20px 50px -22px rgba(16, 24, 40, 0.45);
+
+  --radius-lg: 20px;
+  --radius-md: 14px;
+  --radius-sm: 10px;
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --page-bg: #05080f;
+  --bg: #0b1020;
+  --surface: #141b2c;
+  --surface-2: #1b2336;
+  --surface-3: #26304a;
+  --text: #eef2fb;
+  --text-2: #c3cde0;
+  --muted: #93a1b8;
+  --border: #263047;
+  --border-strong: #33405c;
+
+  --primary: #7c7bff;
+  --primary-strong: #6366f1;
+  --primary-soft: rgba(99, 102, 241, 0.18);
+  --on-primary: #0b1020;
+
+  --success: #34d399;
+  --success-soft: rgba(52, 211, 153, 0.14);
+  --warn: #fbbf24;
+  --warn-soft: rgba(251, 191, 36, 0.14);
+  --danger: #f87171;
+  --danger-soft: rgba(248, 113, 113, 0.14);
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 10px 24px -18px rgba(0, 0, 0, 0.9);
+  --shadow-float: 0 24px 60px -24px rgba(0, 0, 0, 0.85);
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--text);
+  background: var(--page-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (min-width: 560px) {
+  body {
+    background:
+      radial-gradient(900px 500px at 15% -10%, color-mix(in srgb, var(--primary) 16%, transparent), transparent 70%),
+      radial-gradient(700px 480px at 100% 0%, color-mix(in srgb, #7c3aed 14%, transparent), transparent 72%),
+      var(--page-bg);
+    background-attachment: fixed;
+  }
+}
+
+h1,
+h2,
+h3,
+p,
+figure {
+  margin: 0;
+}
+
+ul,
+ol,
+dl,
+dd,
+dt {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.spin {
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
