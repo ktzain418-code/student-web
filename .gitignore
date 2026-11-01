@@ -1,0 +1,15 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+*.log
+
+# generated Capacitor platform folders (android-native/ holds the real sources)
+android/
+ios/
+
+.env
+.env.*
+!.env.base44-defaults
+
+.DS_Store
